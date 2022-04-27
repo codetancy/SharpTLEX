@@ -45,6 +45,9 @@ bld/
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
+# Antlr generated files
+gen/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
