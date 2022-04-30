@@ -1,4 +1,5 @@
 ﻿using SharpTLEX.Core;
+using SharpTLEX.Exceptions;
 
 namespace SharpTLEX.Builders;
 
@@ -6,13 +7,10 @@ internal class EventBuilder : IEventBuilder
 {
     public Event Build()
     {
-        if (Id is null)
-            throw new Exception();
+        MissingNonOptionalPropertyException.ThrowIfMissing(Id, nameof(Id));
+        MissingNonOptionalPropertyException.ThrowIfMissing(EventClass, nameof(EventClass));
 
-        if (EventClass is null)
-            throw new Exception();
-
-        return new Event((int)Id, EventClass, Stem);
+        return new Event((int)Id!, EventClass!, Stem);
     }
 
     public int? Id { get; private set; }
