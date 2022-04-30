@@ -10,7 +10,7 @@ internal class EventBuilder : IEventBuilder
         MissingNonOptionalPropertyException.ThrowIfMissing(Id, nameof(Id));
         MissingNonOptionalPropertyException.ThrowIfMissing(EventClass, nameof(EventClass));
 
-        return new Event((int)Id!, EventClass!, Stem);
+        return new Event((int)Id!, EventClass!){Stem = Stem};
     }
 
     public int? Id { get; private set; }

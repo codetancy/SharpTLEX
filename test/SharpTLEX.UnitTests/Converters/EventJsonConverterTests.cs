@@ -9,19 +9,15 @@ namespace SharpTLEX.UnitTests.Converters;
 
 public class EventJsonConverterTests
 {
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions()
-    {
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-
     [Theory]
     [InlineData(1, "REPORTING", "e32", "{\"id\":\"e1\",\"eventClass\":\"REPORTING\",\"stem\":\"e32\"}")]
-    [InlineData(1, "REPORTING", null,  "{\"id\":\"e1\",\"eventClass\":\"REPORTING\"}")]
-    public void EventJsonConvert_ShouldSerializeObject(int eventId, string eventClass, string? eventStem, string json)
+    [InlineData(1, "REPORTING", null, "{\"id\":\"e1\",\"eventClass\":\"REPORTING\"}")]
+    public void EventJsonConvert_ShouldSerializeObject(int id, string eventClass, string? stem, string json)
     {
-        var someEvent = new Event(eventId, EventClass.FromValue(eventClass), eventStem);
+        var someEvent = new Event(id, EventClass.FromValue(eventClass)) {Stem = stem};
 
-        string actual = JsonSerializer.Serialize(someEvent, _jsonSerializerOptions);
+        string actual = JsonSerializer.Serialize(someEvent,
+            new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull});
 
         json.Should().Be(actual);
     }
@@ -29,11 +25,12 @@ public class EventJsonConverterTests
     [Theory]
     [InlineData(1, "REPORTING", "e32", "{\"id\":\"e1\",\"eventClass\":\"REPORTING\",\"stem\":\"e32\"}")]
     [InlineData(1, "REPORTING", null, "{\"id\":\"e1\",\"eventClass\":\"REPORTING\"}")]
-    public void EventJsonConvert_ShouldDeserializeObject(int eventId, string eventClass, string? eventStem, string json)
+    public void EventJsonConvert_ShouldDeserializeObject(int id, string eventClass, string? stem, string json)
     {
-        var expected = new Event(eventId, EventClass.FromValue(eventClass), eventStem);
+        var expected = new Event(id, EventClass.FromValue(eventClass)) {Stem = stem};
 
-        var actual = JsonSerializer.Deserialize<Event>(json, _jsonSerializerOptions);
+        var actual = JsonSerializer.Deserialize<Event>(json,
+            new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull});
 
         expected.Should().Be(actual);
     }
@@ -43,7 +40,8 @@ public class EventJsonConverterTests
     {
         string json = "null";
 
-        var actual = JsonSerializer.Deserialize<Event>(json, _jsonSerializerOptions);
+        var actual = JsonSerializer.Deserialize<Event>(json,
+            new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull});
 
         actual.Should().Be(null);
     }
@@ -58,21 +56,11 @@ public class EventJsonConverterTests
     {
         string json = $"{{\"id\":\"{eventId}\",\"eventClass\":\"REPORTING\",\"stem\":\"e32\"}}";
 
-        var action = () => JsonSerializer.Deserialize<Event>(json, _jsonSerializerOptions);
+        var action = () => JsonSerializer.Deserialize<Event>(json,
+            new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull});
 
         action.Should().Throw<JsonException>()
-            .WithMessage($"Property id does not match format {TimeMLRegex.EventIdRegex}.");
-    }
-
-    [Fact]
-    public void EventJsonConvert_ShouldThrowException_WhenPropertyIsNotDefinedInEvent()
-    {
-        string json = "{\"undefinedProperty\":\"someValue\"}";
-
-        var action = () => JsonSerializer.Deserialize<Event>(json, _jsonSerializerOptions);
-
-        action.Should().Throw<JsonException>()
-            .WithMessage($"Property undefinedProperty is not defined in {nameof(Event)}.");
+            .WithMessage($"Property value does not match format {TimeMLRegex.EventIdRegex}.");
     }
 
     [Fact]
@@ -80,9 +68,9 @@ public class EventJsonConverterTests
     {
         string json = "{\"eventClass\":\"UNDEFINED_CLASS\"}";
 
-        var action = () => JsonSerializer.Deserialize<Event>(json, _jsonSerializerOptions);
+        var action = () => JsonSerializer.Deserialize<Event>(json,
+            new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull});
 
         action.Should().Throw<Exception>();
     }
-
 }
