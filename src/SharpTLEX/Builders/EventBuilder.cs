@@ -1,4 +1,6 @@
-﻿namespace SharpTLEX.Core;
+﻿using SharpTLEX.Core;
+
+namespace SharpTLEX.Builders;
 
 internal class EventBuilder : IEventBuilder
 {
