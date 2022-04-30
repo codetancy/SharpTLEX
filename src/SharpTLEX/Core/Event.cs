@@ -1,5 +1,9 @@
-﻿namespace SharpTLEX.Core;
+﻿using System.Text.Json.Serialization;
+using SharpTLEX.Converters;
 
+namespace SharpTLEX.Core;
+
+[JsonConverter(typeof(EventJsonConverter))]
 public class Event : ICloneable, IEquatable<Event?>
 {
     public Event(int id, EventClass eventClass, string? stem = null)
