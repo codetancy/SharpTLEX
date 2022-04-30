@@ -2,5 +2,5 @@
 
 public interface ILinkType
 {
-    Type Type { get; }
+    string Tag { get; }
 }
