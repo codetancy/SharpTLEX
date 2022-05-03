@@ -11,10 +11,10 @@ internal class TimexBuilder : ITimexBuilder
         MissingNonOptionalPropertyException.ThrowIfMissing(Phrase, nameof(Phrase));
         MissingNonOptionalPropertyException.ThrowIfMissing(TimexType, nameof(TimexType));
         MissingNonOptionalPropertyException.ThrowIfMissing(Value, nameof(Value));
-        MissingNonOptionalPropertyException.ThrowIfMissing(TemporalFunction, nameof(TemporalFunction));
 
-        return new Timex((int)Id!, TimexType!, Value!, (bool)TemporalFunction!, Phrase!)
+        return new Timex((int)Id!, TimexType!, Value!, Phrase!)
         {
+            TemporalFunction = TemporalFunction,
             Mod = Mod,
             FunctionInDocument = FunctionInDocument,
             AnchorTimeId = AnchorTimeId,
@@ -33,7 +33,7 @@ internal class TimexBuilder : ITimexBuilder
 
     public string? Value { get; private set; }
 
-    public bool? TemporalFunction { get; private set; }
+    public bool TemporalFunction { get; private set; } = true;
 
     public Mod? Mod { get; private set; }
 

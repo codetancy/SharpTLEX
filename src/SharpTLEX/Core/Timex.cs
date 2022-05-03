@@ -11,11 +11,12 @@ public record Timex(
     TimexType Type,
     [property: JsonPropertyName("value"), JsonPropertyOrder(2)]
     string Value,
-    [property: JsonPropertyName("temporalFunction"), JsonPropertyOrder(3)]
-    bool TemporalFunction,
     [property: JsonPropertyName("phrase"), JsonPropertyOrder(4)]
     string Phrase)
 {
+    [property: JsonPropertyName("temporalFunction"), JsonPropertyOrder(3)]
+    public bool TemporalFunction { get; init; } = true;
+
     [property: JsonPropertyName("mod"), JsonPropertyOrder(5), JsonConverter(typeof(SmartEnumValueConverter<Mod, string>))]
     public Mod? Mod { get; init; }
 
