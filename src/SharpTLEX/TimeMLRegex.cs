@@ -11,4 +11,6 @@ public static class TimeMLRegex
     public static Regex TimexIdRegex = new Regex("^t\\d+$", RegexOptions.Compiled);
 
     public static Regex EventInstanceIdRegex = new Regex("^ei\\d+$", RegexOptions.Compiled);
+
+    public static Regex LinkIdRegex = new Regex("^l\\d+$", RegexOptions.Compiled);
 }
